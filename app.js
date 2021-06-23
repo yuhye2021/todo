@@ -2,15 +2,13 @@ const root = document.getElementById('root');
 const input = document.getElementById('todo-input');
 const submit = document.getElementById('submit');
 
-
+const itemContainer = document.createElement('div');
 const ul = document.createElement('ul');
+
 root.appendChild(ul);
 
-
 submit.addEventListener('click', submitItem);
-btnComplete.addEventListener('click', completeItem);
-btnDelete.addEventListener('click', deleteItem);
-
+itemContainer.addEventListener('click', completeDelete);
 
 function submitItem(e){
     e.preventDefault();
@@ -21,7 +19,7 @@ function submitItem(e){
 }
 
 function addItem(val) {
-    const itemContainer = document.createElement('div');
+    
     const li = document.createElement('li');
     const btnComplete = document.createElement('button');
     const btnDelete = document.createElement('button'); 
@@ -29,19 +27,31 @@ function addItem(val) {
     itemContainer.setAttribute('class', 'item-container');
     li.innerHTML = val;
     btnComplete.innerText = 'Completed';
+    btnComplete.setAttribute('class', 'complete');
     btnDelete.innerText = 'Delete';
+    btnDelete.setAttribute('class', 'delete');
 
     ul.appendChild(itemContainer);
     itemContainer.appendChild(li);
-    itemContainer.appendChild(btnComplete);
-    itemContainer.appendChild(btnDelete);
+    li.appendChild(btnComplete);
+    li.appendChild(btnDelete);
+}
+
+function completeDelete(e) {
+    let btnType = e.target.classList[0];
+    if (btnType === 'complete') {
+        completeItem(e);
+    }else if (btnType === 'delete'){
+        deleteItem(e);
+    }
 }
 
 function completeItem(e) {
-    console.log(e);
-    
+    const parent = e.target.parentElement;
+    parent.classList.toggle('completed');
 }
 
-function deleteItem() {
-    ul.removeChild()
+function deleteItem(e) {
+    const parent = e.target.parentElement;
+    parent.remove();
 }
